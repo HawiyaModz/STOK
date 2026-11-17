@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>StokKu — Manajemen Stok & Chat Tim</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastContainer" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-[92%] max-w-md pointer-events-none"></div>
+
+  <!-- ==================== 1. HALAMAN LOGIN ==================== -->
+  <div id="loginView" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/30">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">StokKu</h1>
+          <p class="text-xs font-medium text-slate-500">Manajemen Stok & Koordinasi Tim</p>
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Username</label>
+          <input type="text" id="loginUsername" required autocomplete="username" placeholder="Masukkan username Anda"
+            class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-900 font-semibold focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 outline-none transition" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Password</label>
+          <div class="relative">
+            <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Masukkan password Anda"
+              class="w-full px-4 py-3.5 pr-12 rounded-2xl border border-slate-200 bg-slate-50 text-slate-900 font-semibold focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 outline-none transition" />
+            <button type="button" onclick="togglePasswordVisibility('loginPassword')"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-700">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="loginSubmitBtn"
+          class="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold text-base shadow-lg shadow-blue-600/25 transition">
+          Masuk ke Aplikasi
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 2. APLIKASI UTAMA ==================== -->
+  <div id="appView" class="hidden flex-1 flex flex-col">
+
+    <!-- HEADER TOP BAR -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200/80">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <!-- TOMBOL STRIP TIGA (≡) -->
+          <button type="button" onclick="openDrawer()" aria-label="Buka Menu"
+            class="relative w-11 h-11 shrink-0 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 flex items-center justify-center transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span id="headerChatDot" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 border-2 border-white"></span>
+          </button>
+
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h1 id="headerTitle" class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight truncate">Stok Barang</h1>
+              <span id="headerRoleBadge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 text-blue-700 shrink-0">Admin</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <p id="headerSubtitle" class="text-xs text-slate-500 font-medium truncate">Memuat data...</p>
+              <span id="syncIndicator" class="inline-block w-2 h-2 rounded-full bg-emerald-500 shrink-0" title="Tersinkronisasi"></span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" onclick="copyReportToWhatsApp()"
+          class="shrink-0 px-3.5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          <span>Salin WA</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- DRAWER MENU STRIP TIGA (≡) -->
+    <div id="drawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden transition-opacity"></div>
+    <aside id="navDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-200 ease-out flex flex-col">
+      <div class="p-5 bg-gradient-to-br from-slate-900 to-blue-950 text-white">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-extrabold uppercase tracking-widest text-blue-300">Menu StokKu</span>
+          <button type="button" onclick="closeDrawer()" class="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-3">
+          <div id="drawerUserAvatar" class="w-11 h-11 rounded-2xl bg-blue-600 flex items-center justify-center font-extrabold text-lg">A</div>
+          <div class="min-w-0">
+            <p id="drawerUserName" class="font-bold text-sm truncate">Administrator</p>
+            <p id="drawerUserRole" class="text-xs text-blue-200 font-medium">@admin</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+        <button type="button" id="navBtnStok" onclick="switchTab('stok'); closeDrawer();"
+          class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm bg-blue-50 text-blue-700 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+          </svg>
+          <span>Stok Barang</span>
+        </button>
+
+        <button type="button" onclick="closeDrawer(); openAddModal();"
+          class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Tambah Produk</span>
+        </button>
+
+        <button type="button" id="navBtnChat" onclick="switchTab('chat'); closeDrawer();"
+          class="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <span>Chat Group</span>
+          </div>
+          <span id="drawerChatBadge" class="hidden px-2 py-0.5 rounded-full bg-rose-500 text-white text-[11px] font-extrabold">0</span>
+        </button>
+
+        <button type="button" id="drawerAdminBtn" onclick="switchTab('admin'); closeDrawer();"
+          class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span>Kelola User (Admin)</span>
+        </button>
+
+        <div class="pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeDrawer(); copyReportToWhatsApp();"
+            class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span>Salin Laporan WA</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="p-4 border-t border-slate-100">
+        <button type="button" onclick="handleLogout()"
+          class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-sm transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          <span>Keluar (Logout)</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- KONTEN UTAMA -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 flex flex-col">
+
+      <!-- ==================== TAB 1: STOK BARANG ==================== -->
+      <section id="stokSection" class="space-y-4">
+
+        <!-- BAR PENCARIAN, URUTAN & TOGGLE FILTER A-Z -->
+        <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-xs border border-slate-200/80 space-y-3.5">
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <div class="relative flex-1">
+              <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input type="text" id="searchInput" oninput="renderProducts()" placeholder="Cari nama produk..."
+                class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none transition" />
+            </div>
+
+            <div class="flex gap-2">
+              <button type="button" id="toggleAzBtn" onclick="toggleAzBar()"
+                class="px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs sm:text-sm font-bold flex items-center gap-2 transition">
+                <span>Filter A–Z</span>
+                <span id="activeLetterBadge" class="hidden px-1.5 py-0.5 rounded-md bg-blue-600 text-white text-[11px] font-extrabold">A</span>
+                <svg id="toggleAzChevron" class="w-4 h-4 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <select id="sortSelect" onchange="renderProducts()"
+                class="px-3.5 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold outline-none focus:border-blue-600">
+                <option value="newest">Terbaru</option>
+                <option value="az">Nama A → Z</option>
+                <option value="za">Nama Z → A</option>
+                <option value="highest">Stok Terbanyak</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- PANEL FILTER HURUF A-Z (COLLAPSIBLE) -->
+          <div id="azPanel" class="hidden pt-3 border-t border-slate-100 animate-fade-in">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pilih Huruf Awal Produk</span>
+              <button type="button" onclick="toggleAzBar()" class="text-xs font-bold text-blue-600 hover:underline">Tutup</button>
+            </div>
+            <div id="azButtonsContainer" class="flex flex-wrap gap-1.5"></div>
+          </div>
+
+          <!-- FILTER SATUAN & AKSI MASSAL -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button type="button" onclick="setUnitFilter('ALL')" data-unit="ALL"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition">Semua</button>
+              <button type="button" onclick="setUnitFilter('pcs')" data-unit="pcs"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">pcs</button>
+              <button type="button" onclick="setUnitFilter('liter')" data-unit="liter"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">liter</button>
+              <button type="button" onclick="setUnitFilter('gram')" data-unit="gram"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">gram</button>
+              <button type="button" onclick="setUnitFilter('bks')" data-unit="bks"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">bks</button>
+              <button type="button" onclick="setUnitFilter('porsi')" data-unit="porsi"
+                class="filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">porsi</button>
+
+              <button type="button" id="resetFilterBtn" onclick="resetAllFilters()"
+                class="hidden shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition">
+                Reset Filter
+              </button>
+            </div>
+
+            <div id="bulkActionBar" class="flex items-center gap-2">
+              <button type="button" onclick="confirmBulkAction('reset_stock')"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 transition">
+                Reset Stok (0)
+              </button>
+              <button type="button" onclick="confirmBulkAction('delete_all')"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 transition">
+                Hapus Semua
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRID DAFTAR PRODUK -->
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="hidden bg-white rounded-3xl p-10 text-center border border-slate-200/80">
+          <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <h3 class="text-base font-extrabold text-slate-800">Belum ada produk tersimpan</h3>
+          <p class="text-xs text-slate-500 mt-1 mb-4">Buka menu strip tiga (≡) lalu pilih <strong>Tambah Produk</strong> untuk mulai mencatat stok.</p>
+          <button type="button" onclick="openAddModal()"
+            class="px-5 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">
+            + Tambah Produk Sekarang
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: CHAT GROUP ==================== -->
+      <section id="chatSection" class="hidden flex-1 flex flex-col bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden min-h-[72vh] animate-fade-in">
+        <div class="px-4 py-3 bg-sky-50 border-b border-sky-100 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 text-xs font-bold text-sky-800">
+            <svg class="w-4 h-4 text-sky-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Chat otomatis dihapus setelah 30 hari / akhir bulan agar tetap fresh.</span>
+          </div>
+          <button type="button" id="adminClearChatBtn" onclick="confirmBulkAction('clear_chat')"
+            class="hidden shrink-0 px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 text-[11px] font-extrabold transition">
+            Bersihkan
+          </button>
+        </div>
+
+        <div id="chatMessagesContainer" class="flex-1 p-4 sm:p-5 space-y-3 overflow-y-auto bg-slate-50/70 max-h-[58vh]"></div>
+
+        <form onsubmit="handleSendChat(event)" class="p-3 sm:p-4 bg-white border-t border-slate-200/80 flex items-center gap-2">
+          <input type="text" id="chatInput" maxlength="1000" placeholder="Tulis pesan untuk tim..."
+            class="flex-1 px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none transition" />
+          <button type="submit" id="chatSendBtn"
+            class="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-sm shadow-sm flex items-center gap-1.5 transition">
+            <span>Kirim</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- ==================== TAB 3: PANEL ADMIN (KELOLA USER) ==================== -->
+      <section id="adminSection" class="hidden space-y-5 animate-fade-in">
+        <div id="storageStatusBanner" class="p-4 rounded-3xl border text-xs font-bold flex items-center justify-between gap-3"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-5 bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80 h-fit">
+            <h2 class="text-base font-extrabold text-slate-900 mb-1">Buat Akun User Baru</h2>
+            <p class="text-xs text-slate-500 mb-4">User baru dapat langsung login & mengelola stok bersama.</p>
+
+            <form id="createUserForm" onsubmit="handleCreateUser(event)" class="space-y-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap</label>
+                <input type="text" id="newUserName" required placeholder="Contoh: Budi Santoso"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Username Login</label>
+                <input type="text" id="newUserUsername" required placeholder="Contoh: budi01"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Password</label>
+                <input type="text" id="newUserPassword" required placeholder="Minimal 4 karakter"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Hak Akses (Role)</label>
+                <select id="newUserRole"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold focus:bg-white focus:border-blue-600 outline-none">
+                  <option value="user">User / Staff (Input & Edit Stok + Chat)</option>
+                  <option value="admin">Admin (Akses Penuh + Kelola User)</option>
+                </select>
+              </div>
+
+              <button type="submit"
+                class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-600/20 transition">
+                + Simpan Akun User
+              </button>
+            </form>
+          </div>
+
+          <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200/80">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-base font-extrabold text-slate-900">Daftar Akun Terdaftar</h2>
+                <p class="text-xs text-slate-500">Kelola user yang dapat masuk ke aplikasi</p>
+              </div>
+              <span id="totalUsersBadge" class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-extrabold">0 User</span>
+            </div>
+
+            <div id="userListContainer" class="space-y-2.5"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODAL 1: TAMBAH / GABUNG STOK OTOMATIS ==================== -->
+  <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-5 sm:p-6 animate-fade-in max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="text-lg font-extrabold text-slate-900">Tambah / Gabung Stok</h3>
+          <p class="text-xs text-slate-500">Produk & satuan yang sama otomatis dijumlahkan</p>
+        </div>
+        <button type="button" onclick="closeAddModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="existingChipsWrapper" class="mt-4 hidden">
+        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Pilih Cepat Produk Tersimpan:</p>
+        <div id="existingProductChips" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
+      </div>
+
+      <form id="addProductForm" onsubmit="handleAddProduct(event)" class="mt-4 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Produk</label>
+          <input type="text" id="prodName" oninput="updateAddPreview()" required placeholder="Contoh: Beras Pandan Wangi"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-bold focus:bg-white focus:border-blue-600 outline-none transition" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Jumlah Masuk</label>
+          <input type="number" id="prodQty" step="any" min="0.001" oninput="updateAddPreview()" required placeholder="Contoh: 17 atau 0.5"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-base font-extrabold focus:bg-white focus:border-blue-600 outline-none transition" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Satuan</label>
+          <div class="grid grid-cols-5 gap-2">
+            <button type="button" onclick="selectAddUnit('pcs')" data-add-unit="pcs"
+              class="add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-blue-600 text-white shadow-sm transition">pcs</button>
+            <button type="button" onclick="selectAddUnit('liter')" data-add-unit="liter"
+              class="add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">liter</button>
+            <button type="button" onclick="selectAddUnit('gram')" data-add-unit="gram"
+              class="add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">gram</button>
+            <button type="button" onclick="selectAddUnit('bks')" data-add-unit="bks"
+              class="add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">bks</button>
+            <button type="button" onclick="selectAddUnit('porsi')" data-add-unit="porsi"
+              class="add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">porsi</button>
+          </div>
+        </div>
+
+        <div id="addPreviewBox" class="hidden p-3.5 rounded-2xl border text-xs font-bold"></div>
+
+        <div class="flex gap-2.5 pt-2">
+          <button type="button" onclick="closeAddModal()"
+            class="flex-1 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+            Batal
+          </button>
+          <button type="submit"
+            class="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-600/25 transition">
+            Simpan & Hitung Otomatis
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: HITUNG / KUSTOM TAMBAH & KURANG ==================== -->
+  <div id="adjustModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-5 sm:p-6 animate-fade-in">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="adjProductTitle" class="text-base font-extrabold text-slate-900">Sesuaikan Stok</h3>
+          <p id="adjCurrentStock" class="text-xs font-bold text-blue-600">Stok saat ini: 0 pcs</p>
+        </div>
+        <button type="button" onclick="closeAdjustModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl">
+          <button type="button" id="adjModeAddBtn" onclick="setAdjustMode('add')"
+            class="py-2.5 rounded-xl font-extrabold text-xs bg-emerald-600 text-white shadow-xs transition">
+            + Tambah Stok
+          </button>
+          <button type="button" id="adjModeSubBtn" onclick="setAdjustMode('sub')"
+            class="py-2.5 rounded-xl font-extrabold text-xs text-slate-600 hover:text-slate-900 transition">
+            - Kurangi Stok
+          </button>
+        </div>
+
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Angka Cepat:</p>
+          <div id="adjQuickChips" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Masukkan Jumlah</label>
+          <input type="number" id="adjAmount" step="any" min="0.001" oninput="updateAdjustPreview()" placeholder="0"
+            class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-lg font-extrabold focus:bg-white focus:border-blue-600 outline-none" />
+        </div>
+
+        <div id="adjPreviewBox" class="hidden p-3.5 rounded-2xl border text-xs font-bold"></div>
+
+        <button type="button" onclick="confirmAdjustStock()"
+          class="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition">
+          Terapkan Perubahan Stok
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 3: RIWAYAT MUTASI PRODUK ==================== -->
+  <div id="historyModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-5 sm:p-6 animate-fade-in max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="histProductTitle" class="text-base font-extrabold text-slate-900">Riwayat Stok</h3>
+          <p class="text-xs text-slate-500">Catatan penambahan & pengurangan stok</p>
+        </div>
+        <button type="button" onclick="closeHistoryModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="historyListContainer" class="mt-4 space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 4: KONFIRMASI AKSI ==================== -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+    <div class="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6 animate-fade-in text-center">
+      <div id="confirmIconBox" class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+      </div>
+      <h3 id="confirmTitle" class="text-base font-extrabold text-slate-900">Konfirmasi Aksi</h3>
+      <p id="confirmMessage" class="text-xs text-slate-500 mt-1.5 leading-relaxed">Apakah Anda yakin?</p>
+
+      <div class="grid grid-cols-2 gap-2.5 mt-5">
+        <button type="button" onclick="closeConfirmModal()"
+          class="py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">
+          Batal
+        </button>
+        <button type="button" id="confirmProceedBtn" onclick="executeConfirmedAction()"
+          class="py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition">
+          Ya, Lanjutkan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== KONFIGURASI & STATE APLIKASI ====================
+    const API_ENDPOINT = '/api/store';
+    const SESSION_KEY = 'STOKKU_SESSION_V2';
+    const LOCAL_BACKUP_KEY = 'STOKKU_LOCAL_BACKUP_V2';
+    const LAST_SEEN_CHAT_KEY = 'STOKKU_LAST_SEEN_CHAT_V2';
+    const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+    let appState = {
+      users: [],
+      products: [],
+      chats: []
+    };
+    let isCloudPersistent = false;
+    let isOfflineFallback = false;
+
+    let currentUser = null;
+    let currentTab = 'stok';
+    let selectedAddUnit = 'pcs';
+    let selectedUnitFilter = 'ALL';
+    let selectedLetterFilter = 'ALL';
+    let isAzOpen = false;
+
+    let adjustingProductId = null;
+    let adjustMode = 'add';
+    let pendingConfirm = null;
+    let syncTimer = null;
+
+    // ==================== HELPER ====================
+    function roundDec(num) {
+      return Math.round((Number(num) + Number.EPSILON) * 1000) / 1000;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getMonthKey(ts = Date.now()) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function formatTimeNow() {
+      const now = new Date();
+      return now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' +
+             now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function cleanExpiredChats(chats) {
+      if (!Array.isArray(chats)) return [];
+      const now = Date.now();
+      const curMonth = getMonthKey(now);
+      return chats.filter(m => {
+        const ts = Number(m.timestamp) || 0;
+        return (now - ts < THIRTY_DAYS_MS) && ((m.monthKey || getMonthKey(ts)) === curMonth);
+      });
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      const colors = type === 'error'
+        ? 'bg-rose-600 text-white'
+        : type === 'info'
+          ? 'bg-slate-800 text-white'
+          : 'bg-emerald-600 text-white';
+      el.className = `${colors} px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-bold text-center animate-fade-in`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.25s';
+        setTimeout(() => el.remove(), 250);
+      }, 2400);
+    }
+
+    // ==================== SINKRONISASI BACKEND VERCEL ====================
+    function getDefaultLocalState() {
+      return {
+        users: [
+          {
+            id: 'usr-admin-default',
+            name: 'Administrator',
+            username: 'admin',
+            password: 'admin123',
+            role: 'admin',
+            createdAt: 'Default Sistem'
+          }
+        ],
+        products: [],
+        chats: []
+      };
+    }
+
+    function loadLocalBackup() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(LOCAL_BACKUP_KEY));
+        if (raw && Array.isArray(raw.users)) {
+          raw.chats = cleanExpiredChats(raw.chats);
+          return raw;
+        }
+      } catch {}
+      return getDefaultLocalState();
+    }
+
+    function saveLocalBackup(state) {
+      state.chats = cleanExpiredChats(state.chats);
+      localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(state));
+    }
+
+    async function fetchServerState(silent = false) {
+      try {
+        const res = await fetch(API_ENDPOINT, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Server tidak merespons');
+        const data = await res.json();
+        if (data && data.ok && data.state) {
+          appState = data.state;
+          appState.chats = cleanExpiredChats(appState.chats);
+          isCloudPersistent = Boolean(data.persistent);
+          isOfflineFallback = false;
+          saveLocalBackup(appState);
+          updateSyncDot(true);
+          refreshAllViews();
+          return true;
+        }
+      } catch {
+        isOfflineFallback = true;
+        appState = loadLocalBackup();
+        updateSyncDot(false);
+        if (!silent) refreshAllViews();
+      }
+      return false;
+    }
+
+    async function dispatchAction(action, payload = {}) {
+      if (!isOfflineFallback) {
+        try {
+          const res = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action, payload })
+          });
+          const data = await res.json();
+          if (!res.ok || !data.ok) {
+            showToast(data.error || 'Gagal menyimpan ke server', 'error');
+            return false;
+          }
+          appState = data.state;
+          appState.chats = cleanExpiredChats(appState.chats);
+          isCloudPersistent = Boolean(data.persistent);
+          saveLocalBackup(appState);
+          updateSyncDot(true);
+          refreshAllViews();
+          return true;
+        } catch {
+          isOfflineFallback = true;
+          updateSyncDot(false);
+        }
+      }
+
+      applyLocalMutation(action, payload);
+      saveLocalBackup(appState);
+      refreshAllViews();
+      return true;
+    }
+
+    function applyLocalMutation(action, payload) {
+      const now = Date.now();
+      const timeNow = formatTimeNow();
+
+      if (action === 'ADD_PRODUCT') {
+        const { name, qty, unit, userName } = payload;
+        const addQty = roundDec(qty);
+        const idx = appState.products.findIndex(
+          p => p.name.trim().toLowerCase() === name.trim().toLowerCase() && p.unit === unit
+        );
+        if (idx !== -1) {
+          const oldQty = appState.products[idx].qty;
+          const newQty = roundDec(oldQty + addQty);
+          const calcStr = `${oldQty} + ${addQty} = ${newQty} ${unit}`;
+          appState.products[idx].qty = newQty;
+          appState.products[idx].updatedBy = userName;
+          appState.products[idx].updatedAt = timeNow;
+          appState.products[idx].lastCalc = calcStr;
+          appState.products[idx].lastType = 'add';
+          appState.products[idx].history.unshift({ calc: calcStr, user: userName, time: timeNow, type: 'add' });
+          const moved = appState.products.splice(idx, 1)[0];
+          appState.products.unshift(moved);
+        } else {
+          const calcStr = `Stok awal: ${addQty} ${unit}`;
+          appState.products.unshift({
+            id: 'prod-' + now,
+            name: name.trim(),
+            qty: addQty,
+            unit,
+            updatedBy: userName,
+            updatedAt: timeNow,
+            lastCalc: calcStr,
+            lastType: 'add',
+            history: [{ calc: calcStr, user: userName, time: timeNow, type: 'add' }]
+          });
+        }
+      } else if (action === 'ADJUST_STOCK') {
+        const p = appState.products.find(x => x.id === payload.id);
+        if (p) {
+          const newQty = roundDec(p.qty + payload.delta);
+          const sign = payload.delta >= 0 ? '+' : '-';
+          const calcStr = `${p.qty} ${sign} ${Math.abs(roundDec(payload.delta))} = ${newQty} ${p.unit}`;
+          p.qty = newQty;
+          p.updatedBy = payload.userName;
+          p.updatedAt = timeNow;
+          p.lastCalc = calcStr;
+          p.lastType = payload.delta >= 0 ? 'add' : 'sub';
+          p.history.unshift({ calc: calcStr, user: payload.userName, time: timeNow, type: p.lastType });
+        }
+      } else if (action === 'RESET_ALL_STOCK') {
+        appState.products = appState.products.map(p => {
+          const calcStr = `Reset stok: ${p.qty} → 0 ${p.unit}`;
+          p.history.unshift({ calc: calcStr, user: payload.userName, time: timeNow, type: 'sub' });
+          return { ...p, qty: 0, updatedBy: payload.userName, updatedAt: timeNow, lastCalc: calcStr, lastType: 'sub' };
+        });
+      } else if (action === 'DELETE_PRODUCT') {
+        appState.products = appState.products.filter(p => p.id !== payload.id);
+      } else if (action === 'DELETE_ALL_PRODUCTS') {
+        appState.products = [];
+      } else if (action === 'SEND_CHAT') {
+        appState.chats.push({
+          id: 'chat-' + now,
+          userId: payload.userId,
+          userName: payload.userName,
+          userRole: payload.userRole,
+          text: payload.text,
+          timestamp: now,
+          monthKey: getMonthKey(now),
+          timeLabel: timeNow
+        });
+      } else if (action === 'CLEAR_CHAT') {
+        appState.chats = [];
+      } else if (action === 'CREATE_USER') {
+        appState.users.push({
+          id: 'usr-' + now,
+          name: payload.name,
+          username: payload.username,
+          password: payload.password,
+          role: payload.role,
+          createdAt: timeNow
+        });
+      } else if (action === 'DELETE_USER') {
+        appState.users = appState.users.filter(u => u.id !== payload.id);
+      }
+    }
+
+    function updateSyncDot(online) {
+      const dot = document.getElementById('syncIndicator');
+      if (!dot) return;
+      if (online && isCloudPersistent) {
+        dot.className = 'inline-block w-2 h-2 rounded-full bg-emerald-500 shrink-0';
+        dot.title = 'Tersinkronisasi ke GitHub';
+      } else if (online) {
+        dot.className = 'inline-block w-2 h-2 rounded-full bg-amber-400 shrink-0';
+        dot.title = 'Server aktif, tetapi sinkronisasi GitHub belum tersedia';
+      } else {
+        dot.className = 'inline-block w-2 h-2 rounded-full bg-slate-400 shrink-0';
+        dot.title = 'Mode Offline Lokal';
+      }
+    }
+
+    function refreshAllViews() {
+      if (!currentUser) return;
+      updateChatUnreadBadge();
+      if (isAzOpen) renderAzButtons();
+      if (currentTab === 'stok') renderProducts();
+      if (currentTab === 'chat') renderChatMessages();
+      if (currentTab === 'admin') renderUsers();
+    }
+
+    // ==================== LOGIN & LOGOUT ====================
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginSubmitBtn');
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      btn.disabled = true;
+      btn.textContent = 'Memeriksa akun...';
+
+      await fetchServerState(true);
+
+      const found = appState.users.find(
+        u => u.username.toLowerCase() === username.toLowerCase() && u.password === password
+      );
+
+      btn.disabled = false;
+      btn.textContent = 'Masuk ke Aplikasi';
+
+      if (!found) {
+        showToast('Username atau password salah!', 'error');
+        return;
+      }
+
+      currentUser = { id: found.id, name: found.name, username: found.username, role: found.role };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+      showToast(`Selamat datang, ${currentUser.name}!`);
+      enterApp();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem(SESSION_KEY);
+      currentUser = null;
+      if (syncTimer) clearInterval(syncTimer);
+      closeDrawer();
+      document.getElementById('appView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+      document.getElementById('loginPassword').value = '';
+      showToast('Anda telah keluar', 'info');
+    }
+
+    function enterApp() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('appView').classList.remove('hidden');
+
+      document.getElementById('drawerUserName').textContent = currentUser.name;
+      document.getElementById('drawerUserRole').textContent = `@${currentUser.username} • ${currentUser.role === 'admin' ? 'Admin' : 'Staff'}`;
+      document.getElementById('drawerUserAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+      const roleBadge = document.getElementById('headerRoleBadge');
+      if (currentUser.role === 'admin') {
+        roleBadge.textContent = 'Admin';
+        roleBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-700 shrink-0';
+        document.getElementById('drawerAdminBtn').classList.remove('hidden');
+        document.getElementById('adminClearChatBtn').classList.remove('hidden');
+      } else {
+        roleBadge.textContent = 'Staff';
+        roleBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700 shrink-0';
+        document.getElementById('drawerAdminBtn').classList.add('hidden');
+        document.getElementById('adminClearChatBtn').classList.add('hidden');
+      }
+
+      switchTab('stok');
+
+      if (syncTimer) clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        if (currentUser && !document.hidden) {
+          fetchServerState(true);
+        }
+      }, 4000);
+    }
+
+    // ==================== DRAWER STRIP TIGA (≡) & NAVIGASI TAB ====================
+    function openDrawer() {
+      document.getElementById('drawerBackdrop').classList.remove('hidden');
+      document.getElementById('navDrawer').classList.remove('-translate-x-full');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawerBackdrop').classList.add('hidden');
+      document.getElementById('navDrawer').classList.add('-translate-x-full');
+    }
+
+    function switchTab(tab) {
+      if (tab === 'admin' && currentUser?.role !== 'admin') return;
+      currentTab = tab;
+
+      const stokSec = document.getElementById('stokSection');
+      const chatSec = document.getElementById('chatSection');
+      const adminSec = document.getElementById('adminSection');
+
+      const navStok = document.getElementById('navBtnStok');
+      const navChat = document.getElementById('navBtnChat');
+      const navAdmin = document.getElementById('drawerAdminBtn');
+
+      const inactiveClass = 'w-full flex items-center justify-between px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition';
+      navStok.className = 'w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition';
+      navChat.className = inactiveClass;
+      navAdmin.className = 'w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm text-slate-700 hover:bg-slate-100 transition';
+
+      stokSec.classList.add('hidden');
+      chatSec.classList.add('hidden');
+      adminSec.classList.add('hidden');
+
+      if (tab === 'stok') {
+        stokSec.classList.remove('hidden');
+        document.getElementById('headerTitle').textContent = 'Stok Barang';
+        navStok.className = 'w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm bg-blue-50 text-blue-700 transition';
+        renderProducts();
+      } else if (tab === 'chat') {
+        chatSec.classList.remove('hidden');
+        document.getElementById('headerTitle').textContent = 'Chat Group';
+        document.getElementById('headerSubtitle').textContent = 'Diskusi tim • Auto-reset 30 hari / akhir bulan';
+        navChat.className = 'w-full flex items-center justify-between px-4 py-3.5 rounded-2xl font-bold text-sm bg-sky-50 text-sky-700 transition';
+        markChatsAsSeen();
+        renderChatMessages(true);
+      } else if (tab === 'admin') {
+        adminSec.classList.remove('hidden');
+        document.getElementById('headerTitle').textContent = 'Kelola User';
+        document.getElementById('headerSubtitle').textContent = 'Panel khusus Administrator';
+        navAdmin.className = 'w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm bg-indigo-50 text-indigo-700 transition';
+        renderUsers();
+      }
+    }
+
+    // ==================== FILTER A-Z (COLLAPSIBLE) & SATUAN ====================
+    function toggleAzBar() {
+      isAzOpen = !isAzOpen;
+      const panel = document.getElementById('azPanel');
+      const chevron = document.getElementById('toggleAzChevron');
+      if (isAzOpen) {
+        panel.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+        renderAzButtons();
+      } else {
+        panel.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function renderAzButtons() {
+      const container = document.getElementById('azButtonsContainer');
+      const existingLetters = new Set(
+        appState.products.map(p => p.name.trim().charAt(0).toUpperCase()).filter(c => /^[A-Z]$/.test(c))
+      );
+
+      const letters = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+      container.innerHTML = letters.map(letter => {
+        const isActive = selectedLetterFilter === letter;
+        const hasItems = letter !== 'ALL' && existingLetters.has(letter);
+        const label = letter === 'ALL' ? 'Semua' : letter;
+        const btnClass = isActive
+          ? 'bg-blue-600 text-white shadow-xs'
+          : 'bg-slate-100 text-slate-700 hover:bg-slate-200';
+        const dot = hasItems && !isActive
+          ? '<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>'
+          : '';
+        return `
+          <button type="button" onclick="setLetterFilter('${letter}')"
+            class="px-2.5 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1 transition ${btnClass}">
+            <span>${label}</span>${dot}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setLetterFilter(letter) {
+      selectedLetterFilter = letter;
+      const badge = document.getElementById('activeLetterBadge');
+      if (letter === 'ALL') {
+        badge.classList.add('hidden');
+      } else {
+        badge.textContent = letter;
+        badge.classList.remove('hidden');
+      }
+      renderAzButtons();
+      renderProducts();
+    }
+
+    function setUnitFilter(unit) {
+      selectedUnitFilter = unit;
+      document.querySelectorAll('.filter-unit-btn').forEach(btn => {
+        if (btn.dataset.unit === unit) {
+          btn.className = 'filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition';
+        } else {
+          btn.className = 'filter-unit-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+        }
+      });
+      renderProducts();
+    }
+
+    function resetAllFilters() {
+      document.getElementById('searchInput').value = '';
+      selectedLetterFilter = 'ALL';
+      document.getElementById('activeLetterBadge').classList.add('hidden');
+      setUnitFilter('ALL');
+      if (isAzOpen) renderAzButtons();
+      renderProducts();
+    }
+
+    // ==================== TAMBAH / GABUNG STOK OTOMATIS ====================
+    function openAddModal() {
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodQty').value = '';
+      selectAddUnit('pcs');
+      document.getElementById('addPreviewBox').classList.add('hidden');
+
+      const wrapper = document.getElementById('existingChipsWrapper');
+      const chipsContainer = document.getElementById('existingProductChips');
+
+      if (appState.products.length > 0) {
+        wrapper.classList.remove('hidden');
+        chipsContainer.innerHTML = appState.products.map(p => `
+          <button type="button" onclick="pickExistingProduct('${p.id}')"
+            class="shrink-0 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200/70 transition">
+            ${escapeHtml(p.name)} (${p.qty} ${escapeHtml(p.unit)})
+          </button>
+        `).join('');
+      } else {
+        wrapper.classList.add('hidden');
+      }
+
+      const modal = document.getElementById('addModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => document.getElementById('prodName').focus(), 100);
+    }
+
+    function closeAddModal() {
+      const modal = document.getElementById('addModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function pickExistingProduct(id) {
+      const product = appState.products.find(p => p.id === id);
+      if (!product) return;
+      document.getElementById('prodName').value = product.name;
+      selectAddUnit(product.unit);
+      document.getElementById('prodQty').focus();
+      updateAddPreview();
+    }
+
+    function selectAddUnit(unit) {
+      selectedAddUnit = unit;
+      document.querySelectorAll('.add-unit-btn').forEach(btn => {
+        if (btn.dataset.addUnit === unit) {
+          btn.className = 'add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-blue-600 text-white shadow-sm transition';
+        } else {
+          btn.className = 'add-unit-btn py-3 rounded-2xl font-extrabold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+        }
+      });
+      updateAddPreview();
+    }
+
+    function updateAddPreview() {
+      const name = document.getElementById('prodName').value.trim();
+      const qtyVal = parseFloat(document.getElementById('prodQty').value);
+      const previewBox = document.getElementById('addPreviewBox');
+
+      if (!name || isNaN(qtyVal) || qtyVal <= 0) {
+        previewBox.classList.add('hidden');
+        return;
+      }
+
+      const addQty = roundDec(qtyVal);
+      const existing = appState.products.find(
+        p => p.name.trim().toLowerCase() === name.toLowerCase() && p.unit === selectedAddUnit
+      );
+
+      previewBox.classList.remove('hidden');
+      if (existing) {
+        const total = roundDec(existing.qty + addQty);
+        previewBox.className = 'p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-bold';
+        previewBox.innerHTML = `Produk sudah ada! Otomatis ditambahkan:<br><span class="text-sm font-extrabold">${existing.qty} + ${addQty} = ${total} ${escapeHtml(selectedAddUnit)}</span>`;
+      } else {
+        previewBox.className = 'p-3.5 rounded-2xl border border-blue-200 bg-blue-50 text-blue-800 text-xs font-bold';
+        previewBox.innerHTML = `Produk baru akan dibuat:<br><span class="text-sm font-extrabold">${escapeHtml(name)} — ${addQty} ${escapeHtml(selectedAddUnit)}</span>`;
+      }
+    }
+
+    async function handleAddProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('prodName').value.trim();
+      const qtyVal = parseFloat(document.getElementById('prodQty').value);
+
+      if (!name || isNaN(qtyVal) || qtyVal <= 0) {
+        showToast('Isi nama produk dan jumlah yang valid!', 'error');
+        return;
+      }
+
+      const ok = await dispatchAction('ADD_PRODUCT', {
+        name,
+        qty: roundDec(qtyVal),
+        unit: selectedAddUnit,
+        userName: currentUser.name
+      });
+
+      if (ok) {
+        closeAddModal();
+        showToast(`Stok "${name}" berhasil disimpan!`);
+      }
+    }
+
+    // ==================== QUICK +1 / -1 & MODAL HITUNG KUSTOM ====================
+    async function quickAdjust(id, delta) {
+      const p = appState.products.find(item => item.id === id);
+      if (!p) return;
+
+      if (roundDec(p.qty + delta) < 0) {
+        showToast('Stok tidak boleh kurang dari 0!', 'error');
+        return;
+      }
+
+      await dispatchAction('ADJUST_STOCK', {
+        id,
+        delta: roundDec(delta),
+        userName: currentUser.name
+      });
+    }
+
+    function openAdjustModal(id) {
+      const p = appState.products.find(item => item.id === id);
+      if (!p) return;
+
+      adjustingProductId = id;
+      document.getElementById('adjProductTitle').textContent = p.name;
+      document.getElementById('adjCurrentStock').textContent = `Stok saat ini: ${p.qty} ${p.unit}`;
+      document.getElementById('adjAmount').value = '';
+      document.getElementById('adjPreviewBox').classList.add('hidden');
+
+      const presets = p.unit === 'gram'
+        ? [50, 100, 250, 500, 1000]
+        : p.unit === 'liter'
+          ? [0.25, 0.5, 1, 2, 5]
+          : [1, 5, 10, 25, 50];
+
+      document.getElementById('adjQuickChips').innerHTML = presets.map(val => `
+        <button type="button" onclick="setAdjustQuickVal(${val})"
+          class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-extrabold transition">
+          ${val} ${escapeHtml(p.unit)}
+        </button>
+      `).join('');
+
+      setAdjustMode('add');
+      const modal = document.getElementById('adjustModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeAdjustModal() {
+      const modal = document.getElementById('adjustModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      adjustingProductId = null;
+    }
+
+    function setAdjustMode(mode) {
+      adjustMode = mode;
+      const addBtn = document.getElementById('adjModeAddBtn');
+      const subBtn = document.getElementById('adjModeSubBtn');
+      if (mode === 'add') {
+        addBtn.className = 'py-2.5 rounded-xl font-extrabold text-xs bg-emerald-600 text-white shadow-xs transition';
+        subBtn.className = 'py-2.5 rounded-xl font-extrabold text-xs text-slate-600 hover:text-slate-900 transition';
+      } else {
+        addBtn.className = 'py-2.5 rounded-xl font-extrabold text-xs text-slate-600 hover:text-slate-900 transition';
+        subBtn.className = 'py-2.5 rounded-xl font-extrabold text-xs bg-rose-600 text-white shadow-xs transition';
+      }
+      updateAdjustPreview();
+    }
+
+    function setAdjustQuickVal(val) {
+      document.getElementById('adjAmount').value = val;
+      updateAdjustPreview();
+    }
+
+    function updateAdjustPreview() {
+      const p = appState.products.find(item => item.id === adjustingProductId);
+      const val = parseFloat(document.getElementById('adjAmount').value);
+      const box = document.getElementById('adjPreviewBox');
+
+      if (!p || isNaN(val) || val <= 0) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      const amt = roundDec(val);
+      const result = adjustMode === 'add' ? roundDec(p.qty + amt) : roundDec(p.qty - amt);
+
+      box.classList.remove('hidden');
+      if (result < 0) {
+        box.className = 'p-3.5 rounded-2xl border border-rose-200 bg-rose-50 text-rose-700 text-xs font-bold';
+        box.textContent = `Stok tidak mencukupi! (${p.qty} - ${amt} = ${result})`;
+      } else if (adjustMode === 'add') {
+        box.className = 'p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-bold';
+        box.innerHTML = `Hasil Penambahan:<br><span class="text-sm font-extrabold">${p.qty} + ${amt} = ${result} ${escapeHtml(p.unit)}</span>`;
+      } else {
+        box.className = 'p-3.5 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 text-xs font-bold';
+        box.innerHTML = `Hasil Pengurangan:<br><span class="text-sm font-extrabold">${p.qty} - ${amt} = ${result} ${escapeHtml(p.unit)}</span>`;
+      }
+    }
+
+    async function confirmAdjustStock() {
+      const val = parseFloat(document.getElementById('adjAmount').value);
+      if (isNaN(val) || val <= 0) {
+        showToast('Masukkan jumlah yang valid!', 'error');
+        return;
+      }
+
+      const delta = adjustMode === 'add' ? roundDec(val) : -roundDec(val);
+      const p = appState.products.find(item => item.id === adjustingProductId);
+      if (!p) return;
+
+      if (roundDec(p.qty + delta) < 0) {
+        showToast('Stok tidak mencukupi untuk dikurangi!', 'error');
+        return;
+      }
+
+      const targetId = adjustingProductId;
+      closeAdjustModal();
+      await quickAdjust(targetId, delta);
+      showToast('Stok berhasil diperbarui!');
+    }
+
+    // ==================== RIWAYAT & KONFIRMASI RESET / HAPUS ====================
+    function openHistoryModal(id) {
+      const p = appState.products.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('histProductTitle').textContent = `Riwayat: ${p.name}`;
+      const container = document.getElementById('historyListContainer');
+      const list = p.history || [];
+
+      if (list.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">Belum ada riwayat transaksi.</p>`;
+      } else {
+        container.innerHTML = list.map(h => {
+          const badgeClass = h.type === 'sub'
+            ? 'bg-rose-50 text-rose-700 border-rose-200'
+            : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+          return `
+            <div class="p-3 rounded-2xl border ${badgeClass}">
+              <p class="text-xs sm:text-sm font-extrabold">${escapeHtml(h.calc)}</p>
+              <p class="text-[11px] opacity-80 mt-0.5">Oleh ${escapeHtml(h.user)} • ${escapeHtml(h.time)}</p>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const modal = document.getElementById('historyModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeHistoryModal() {
+      const modal = document.getElementById('historyModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmBulkAction(type, id = null) {
+      if ((type === 'reset_stock' || type === 'delete_all') && appState.products.length === 0) {
+        showToast('Daftar produk masih kosong!', 'error');
+        return;
+      }
+
+      pendingConfirm = { type, id };
+      const titleEl = document.getElementById('confirmTitle');
+      const msgEl = document.getElementById('confirmMessage');
+      const btnEl = document.getElementById('confirmProceedBtn');
+
+      if (type === 'reset_stock') {
+        titleEl.textContent = 'Reset Semua Stok ke 0?';
+        msgEl.textContent = `Jumlah stok untuk ${appState.products.length} produk akan diubah menjadi 0, tetapi nama produk tetap tersimpan.`;
+        btnEl.className = 'py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-sm transition';
+        btnEl.textContent = 'Ya, Reset ke 0';
+      } else if (type === 'delete_all') {
+        titleEl.textContent = 'Hapus Semua Produk?';
+        msgEl.textContent = `Seluruh ${appState.products.length} produk beserta riwayatnya akan dihapus permanen.`;
+        btnEl.className = 'py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition';
+        btnEl.textContent = 'Ya, Hapus Semua';
+      } else if (type === 'delete_one') {
+        const target = appState.products.find(p => p.id === id);
+        titleEl.textContent = 'Hapus Produk Ini?';
+        msgEl.textContent = `Produk "${target ? target.name : ''}" akan dihapus dari daftar stok.`;
+        btnEl.className = 'py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition';
+        btnEl.textContent = 'Hapus Produk';
+      } else if (type === 'clear_chat') {
+        titleEl.textContent = 'Bersihkan Chat Group?';
+        msgEl.textContent = 'Semua pesan di Chat Group akan dihapus sekarang agar ruang diskusi kembali fresh.';
+        btnEl.className = 'py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition';
+        btnEl.textContent = 'Ya, Bersihkan';
+      } else if (type === 'delete_user') {
+        const u = appState.users.find(x => x.id === id);
+        titleEl.textContent = 'Hapus Akun User?';
+        msgEl.textContent = `Akun "${u ? u.name : ''}" (@${u ? u.username : ''}) tidak akan bisa login lagi.`;
+        btnEl.className = 'py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition';
+        btnEl.textContent = 'Hapus User';
+      }
+
+      const modal = document.getElementById('confirmModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('confirmModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      pendingConfirm = null;
+    }
+
+    async function executeConfirmedAction() {
+      if (!pendingConfirm) return;
+      const { type, id } = pendingConfirm;
+      closeConfirmModal();
+
+      if (type === 'reset_stock') {
+        const ok = await dispatchAction('RESET_ALL_STOCK', { userName: currentUser.name });
+        if (ok) showToast('Semua stok berhasil di-reset menjadi 0!');
+      } else if (type === 'delete_all') {
+        const ok = await dispatchAction('DELETE_ALL_PRODUCTS');
+        if (ok) showToast('Semua produk berhasil dihapus!', 'info');
+      } else if (type === 'delete_one') {
+        const ok = await dispatchAction('DELETE_PRODUCT', { id });
+        if (ok) showToast('Produk dihapus', 'info');
+      } else if (type === 'clear_chat') {
+        const ok = await dispatchAction('CLEAR_CHAT');
+        if (ok) showToast('Chat Group berhasil dibersihkan!', 'info');
+      } else if (type === 'delete_user') {
+        const ok = await dispatchAction('DELETE_USER', { id });
+        if (ok) showToast('Akun user dihapus', 'info');
+      }
+    }
+
+    // ==================== RENDER KARTU PRODUK ====================
+    function renderProducts() {
+      const allProducts = appState.products || [];
+      const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+      const sortBy = document.getElementById('sortSelect').value;
+
+      if (currentTab === 'stok') {
+        document.getElementById('headerSubtitle').textContent = `Total ${allProducts.length} produk tersimpan`;
+      }
+
+      const hasFilter = searchQuery !== '' || selectedUnitFilter !== 'ALL' || selectedLetterFilter !== 'ALL';
+      const resetBtn = document.getElementById('resetFilterBtn');
+      if (hasFilter) resetBtn.classList.remove('hidden');
+      else resetBtn.classList.add('hidden');
+
+      let filtered = allProducts.filter(p => {
+        const matchSearch = p.name.toLowerCase().includes(searchQuery);
+        const matchUnit = selectedUnitFilter === 'ALL' || p.unit === selectedUnitFilter;
+        const matchLetter = selectedLetterFilter === 'ALL' || p.name.trim().toUpperCase().startsWith(selectedLetterFilter);
+        return matchSearch && matchUnit && matchLetter;
+      });
+
+      if (sortBy === 'az') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name, 'id'));
+      } else if (sortBy === 'za') {
+        filtered.sort((a, b) => b.name.localeCompare(a.name, 'id'));
+      } else if (sortBy === 'highest') {
+        filtered.sort((a, b) => b.qty - a.qty);
+      }
+
+      const grid = document.getElementById('productGrid');
+      const empty = document.getElementById('emptyState');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(p => {
+        const calcBoxStyle = p.lastType === 'sub'
+          ? 'bg-rose-50 border-rose-200/80 text-rose-700'
+          : 'bg-emerald-50 border-emerald-200/80 text-emerald-700';
+
+        const unitBadgeColors = {
+          pcs: 'bg-blue-100 text-blue-700',
+          liter: 'bg-cyan-100 text-cyan-700',
+          gram: 'bg-amber-100 text-amber-800',
+          bks: 'bg-purple-100 text-purple-700',
+          porsi: 'bg-rose-100 text-rose-700'
+        };
+        const badgeCls = unitBadgeColors[p.unit] || 'bg-slate-100 text-slate-700';
+
+        return `
+          <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-xs border border-slate-200/80 flex flex-col justify-between gap-4 animate-fade-in">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="text-base sm:text-lg font-extrabold text-slate-900 truncate">${escapeHtml(p.name)}</h3>
+                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold ${badgeCls}">${escapeHtml(p.unit)}</span>
+                  </div>
+                  <p class="text-[11px] font-medium text-slate-400 mt-0.5">Update: ${escapeHtml(p.updatedBy || 'Admin')} • ${escapeHtml(p.updatedAt || '-')}</p>
+                </div>
+
+                <button type="button" onclick="confirmBulkAction('delete_one', '${p.id}')" title="Hapus Produk"
+                  class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="mt-3 flex items-baseline gap-2">
+                <span class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">${p.qty}</span>
+                <span class="text-sm font-bold text-slate-500">${escapeHtml(p.unit)}</span>
+              </div>
+
+              <div class="mt-2.5 px-3 py-2 rounded-xl border ${calcBoxStyle} text-xs font-bold">
+                Keterangan: ${escapeHtml(p.lastCalc || `Stok: ${p.qty} ${p.unit}`)}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-2 pt-1">
+              <button type="button" onclick="quickAdjust('${p.id}', -1)"
+                class="col-span-3 py-3 rounded-2xl bg-rose-100 hover:bg-rose-200 active:scale-95 text-rose-700 font-extrabold text-sm transition">
+                -1
+              </button>
+              <button type="button" onclick="quickAdjust('${p.id}', 1)"
+                class="col-span-3 py-3 rounded-2xl bg-emerald-100 hover:bg-emerald-200 active:scale-95 text-emerald-700 font-extrabold text-sm transition">
+                +1
+              </button>
+              <button type="button" onclick="openAdjustModal('${p.id}')"
+                class="col-span-4 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-xs transition">
+                Hitung / Kustom
+              </button>
+              <button type="button" onclick="openHistoryModal('${p.id}')"
+                class="col-span-2 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-bold text-xs flex items-center justify-center transition"
+                title="Riwayat">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== CHAT GROUP ====================
+    function updateChatUnreadBadge() {
+      const chats = appState.chats || [];
+      const lastSeen = Number(localStorage.getItem(LAST_SEEN_CHAT_KEY) || 0);
+
+      if (currentTab === 'chat' && chats.length > 0) {
+        markChatsAsSeen();
+        return;
+      }
+
+      const unread = chats.filter(m => (Number(m.timestamp) || 0) > lastSeen && m.userId !== currentUser?.id).length;
+      const drawerBadge = document.getElementById('drawerChatBadge');
+      const headerDot = document.getElementById('headerChatDot');
+
+      if (unread > 0) {
+        drawerBadge.textContent = unread;
+        drawerBadge.classList.remove('hidden');
+        headerDot.classList.remove('hidden');
+      } else {
+        drawerBadge.classList.add('hidden');
+        headerDot.classList.add('hidden');
+      }
+    }
+
+    function markChatsAsSeen() {
+      const chats = appState.chats || [];
+      const latestTs = chats.length > 0 ? Math.max(...chats.map(m => Number(m.timestamp) || 0)) : Date.now();
+      localStorage.setItem(LAST_SEEN_CHAT_KEY, String(latestTs));
+      document.getElementById('drawerChatBadge').classList.add('hidden');
+      document.getElementById('headerChatDot').classList.add('hidden');
+    }
+
+    function renderChatMessages(scrollToBottom = false) {
+      const container = document.getElementById('chatMessagesContainer');
+      const chats = appState.chats || [];
+      const wasNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+      if (chats.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-12 text-slate-400">
+            <svg class="w-10 h-10 mb-2 opacity-60" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <p class="text-xs font-bold text-slate-500">Belum ada pesan bulan ini</p>
+            <p class="text-[11px] mt-0.5">Mulai kirim pesan koordinasi stok dengan tim Anda.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = chats.map(msg => {
+        const isMine = msg.userId === currentUser?.id;
+        const roleTag = msg.userRole === 'admin'
+          ? '<span class="px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 text-[10px] font-extrabold">Admin</span>'
+          : '<span class="px-1.5 py-0.2 rounded bg-slate-200 text-slate-700 text-[10px] font-bold">Staff</span>';
+
+        if (isMine) {
+          return `
+            <div class="flex flex-col items-end">
+              <div class="max-w-[82%] sm:max-w-[70%] bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-xs">
+                <p class="text-xs sm:text-sm font-medium whitespace-pre-wrap break-words">${escapeHtml(msg.text)}</p>
+              </div>
+              <span class="text-[10px] font-semibold text-slate-400 mt-1">${escapeHtml(msg.timeLabel || '')}</span>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="flex flex-col items-start">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-xs font-extrabold text-slate-800">${escapeHtml(msg.userName)}</span>
+              ${roleTag}
+            </div>
+            <div class="max-w-[82%] sm:max-w-[70%] bg-white border border-slate-200/90 text-slate-800 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-xs">
+              <p class="text-xs sm:text-sm font-medium whitespace-pre-wrap break-words">${escapeHtml(msg.text)}</p>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1">${escapeHtml(msg.timeLabel || '')}</span>
+          </div>
+        `;
+      }).join('');
+
+      if (scrollToBottom || wasNearBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+
+    async function handleSendChat(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      const ok = await dispatchAction('SEND_CHAT', {
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userRole: currentUser.role,
+        text
+      });
+
+      if (ok) {
+        markChatsAsSeen();
+        renderChatMessages(true);
+      }
+    }
+
+    // ==================== SALIN LAPORAN KE WHATSAPP ====================
+    function copyReportToWhatsApp() {
+      const products = appState.products || [];
+      if (products.length === 0) {
+        showToast('Belum ada data stok untuk disalin', 'error');
+        return;
+      }
+
+      const lines = [
+        `*LAPORAN STOK BARANG - STOKKU*`,
+        `Waktu: ${formatTimeNow()}`,
+        `Dicetak oleh: ${currentUser.name}`,
+        `--------------------------------`
+      ];
+
+      products.forEach((p, i) => {
+        lines.push(`${i + 1}. ${p.name}: *${p.qty} ${p.unit}* (${p.lastCalc})`);
+      });
+
+      const text = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast('Laporan stok berhasil disalin untuk WA!'))
+          .catch(() => fallbackCopyText(text));
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showToast('Laporan stok berhasil disalin!');
+    }
+
+    // ==================== MANAJEMEN USER (KHUSUS ADMIN) ====================
+    async function handleCreateUser(e) {
+      e.preventDefault();
+      if (currentUser?.role !== 'admin') return;
+
+      const name = document.getElementById('newUserName').value.trim();
+      const username = document.getElementById('newUserUsername').value.trim();
+      const password = document.getElementById('newUserPassword').value.trim();
+      const role = document.getElementById('newUserRole').value;
+
+      if (!name || !username || password.length < 4) {
+        showToast('Lengkapi data & password minimal 4 karakter!', 'error');
+        return;
+      }
+
+      const ok = await dispatchAction('CREATE_USER', { name, username, password, role });
+      if (ok) {
+        document.getElementById('createUserForm').reset();
+        showToast(`Akun "${username}" berhasil dibuat!`);
+      }
+    }
+
+    function renderUsers() {
+      const banner = document.getElementById('storageStatusBanner');
+      if (isCloudPersistent) {
+        banner.className = 'p-4 rounded-3xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-2.5';
+        banner.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span><span>Database Cloud Vercel (Upstash Redis) Aktif — Semua data stok, user, dan chat tersimpan permanen lintas perangkat.</span>`;
+      } else {
+        banner.className = 'p-4 rounded-3xl border border-amber-200 bg-amber-50 text-amber-900 text-xs font-bold flex items-center gap-2.5';
+        banner.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span><span>Mode Sementara — Hubungkan Upstash Redis di menu Storage Vercel agar data tidak ter-reset saat server sleep.</span>`;
+      }
+
+      const users = appState.users || [];
+      document.getElementById('totalUsersBadge').textContent = `${users.length} User`;
+      const container = document.getElementById('userListContainer');
+
+      container.innerHTML = users.map(u => {
+        const isProtected = u.username.toLowerCase() === 'admin' || u.id === currentUser?.id;
+        const roleBadge = u.role === 'admin'
+          ? '<span class="px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 text-[11px] font-extrabold">Admin</span>'
+          : '<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-extrabold">User / Staff</span>';
+
+        return `
+          <div class="p-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/70 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <p class="text-sm font-extrabold text-slate-900 truncate">${escapeHtml(u.name)}</p>
+                ${roleBadge}
+              </div>
+              <p class="text-xs font-medium text-slate-500 mt-0.5">
+                Username: <strong class="text-slate-700">${escapeHtml(u.username)}</strong> • Pass: <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 text-slate-700">${escapeHtml(u.password)}</code>
+              </p>
+            </div>
+
+            ${isProtected
+              ? '<span class="text-[11px] font-bold text-slate-400 shrink-0">Terlindungi</span>'
+              : `<button type="button" onclick="confirmBulkAction('delete_user', '${u.id}')"
+                  class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold shrink-0 transition">
+                  Hapus
+                </button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== BOOTSTRAP APLIKASI ====================
+    window.addEventListener('DOMContentLoaded', async () => {
+      appState = loadLocalBackup();
+      await fetchServerState(true);
+
+      try {
+        const savedSession = JSON.parse(localStorage.getItem(SESSION_KEY));
+        if (savedSession && savedSession.username) {
+          const validUser = appState.users.find(u => u.id === savedSession.id);
+          if (validUser) {
+            currentUser = { id: validUser.id, name: validUser.name, username: validUser.username, role: validUser.role };
+            enterApp();
+            return;
+          }
+        }
+      } catch {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    });
+  </script>
+</body>
+</html>
