@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918681579-15rw",
+    "name": "Meses",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.31",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.31",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918633021-6em5",
     "name": "Keju",
     "qty": 1,
