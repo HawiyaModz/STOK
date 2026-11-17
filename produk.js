@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794914800906-kcq5",
+    "name": "Tahu Semur",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 18.26",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 18.26",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794906014545-fwvn",
     "name": "Tahu Gejrot",
     "qty": 1,
