@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794904617652-gacw",
+    "name": "Bumbu Sate",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.36",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.36",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794904597911-8fmz",
     "name": "Bumbu Tahu Telur",
     "qty": 1,
