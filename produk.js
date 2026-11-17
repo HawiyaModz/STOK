@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794904734455-8eww",
+    "name": "Bumbu Kerupuk Mie",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.38",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.38",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794904679632-1g88",
     "name": "Bumbu Asinan",
     "qty": 1,
