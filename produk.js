@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794906014545-fwvn",
+    "name": "Tahu Gejrot",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 16.00",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 16.00",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794905052034-xt5p",
     "name": "Kuah Gejrot",
     "qty": 1,
