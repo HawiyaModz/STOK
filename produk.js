@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794914875113-ieng",
+    "name": "Kentang Semur",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 18.27",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 18.27",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794914800906-kcq5",
     "name": "Tahu Semur",
     "qty": 1,
