@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918122394-32my",
+    "name": "Timun Utuh",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.22",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.22",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918090685-jmm6",
     "name": "Toge Mentah",
     "qty": 1,
