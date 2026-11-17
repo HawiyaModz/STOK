@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918034016-7xva",
+    "name": "Tahu Goreng Isi",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.20",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 19.20",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794917921845-13tk",
     "name": "Kuah Laksa Betawi",
     "qty": 1,
