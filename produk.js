@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794917264237-the1",
+    "name": "Kuah Soto Mie",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.07",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 19.07",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794917243978-hgnd",
     "name": "Sayur Asem",
     "qty": 1,
