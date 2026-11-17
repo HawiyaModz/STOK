@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794904986900-9b5y",
+    "name": "Kuah Tek Tek",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.43",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.43",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794904877005-fh2v",
     "name": "Daging Juhi",
     "qty": 1,
