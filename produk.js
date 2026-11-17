@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794902301651-odtt",
+    "name": "Adonan Pisang Goreng",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 14.58",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 14.58",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794902283323-o679",
     "name": "Adonan Tempe Mendoan",
     "qty": 1,
