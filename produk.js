@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794902887041-3p2a",
+    "name": "Pete",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.08",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.08",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794902726655-2tb8",
     "name": "Kuah Pempek",
     "qty": 1,
