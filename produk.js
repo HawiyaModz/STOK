@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794914962206-8396",
+    "name": "Lumpia",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 18.29",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 18.29",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794914904862-3kbr",
     "name": "Empal Gepuk",
     "qty": 1,
