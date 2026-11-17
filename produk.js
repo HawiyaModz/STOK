@@ -36,24 +36,6 @@ export default [
     ]
   },
   {
-    "id": "prod-1794904661782-c6yb",
-    "name": "bumbu Juhi",
-    "qty": 1,
-    "unit": "pcs",
-    "updatedBy": "Administrator",
-    "updatedAt": "17 Nov 15.37",
-    "lastCalc": "Stok awal: 1 pcs",
-    "lastType": "add",
-    "history": [
-      {
-        "calc": "Stok awal: 1 pcs",
-        "user": "Administrator",
-        "time": "17 Nov 15.37",
-        "type": "add"
-      }
-    ]
-  },
-  {
     "id": "prod-1794904629427-6koa",
     "name": "Bumbu Bakar",
     "qty": 1,
