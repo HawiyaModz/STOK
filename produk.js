@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794903126882-5ktg",
+    "name": "Telur Ayam",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.12",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.12",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794903113686-59op",
     "name": "Bakso",
     "qty": 1,
