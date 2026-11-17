@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918699562-0k7l",
+    "name": "Nasi Uduk",
+    "qty": 1,
+    "unit": "bks",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.31",
+    "lastCalc": "Stok awal: 1 bks",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 bks",
+        "user": "Administrator",
+        "time": "17 Nov 19.31",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918681579-15rw",
     "name": "Meses",
     "qty": 1,
