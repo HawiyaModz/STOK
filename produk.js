@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918255075-nqak",
+    "name": "Bihun Mentah",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.24",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.24",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918231413-nzup",
     "name": "Tahu Putih Segita",
     "qty": 1,
