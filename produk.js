@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918231413-nzup",
+    "name": "Tahu Putih Segita",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.23",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 19.23",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918200005-j3d8",
     "name": "Kol Utuh",
     "qty": 1,
