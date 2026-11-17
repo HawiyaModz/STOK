@@ -1,23 +1,5 @@
 export default [
   {
-    "id": "prod-1794903096840-q9w1",
-    "name": "Baso",
-    "qty": 1,
-    "unit": "pcs",
-    "updatedBy": "Administrator",
-    "updatedAt": "17 Nov 15.11",
-    "lastCalc": "Stok awal: 1 pcs",
-    "lastType": "add",
-    "history": [
-      {
-        "calc": "Stok awal: 1 pcs",
-        "user": "Administrator",
-        "time": "17 Nov 15.11",
-        "type": "add"
-      }
-    ]
-  },
-  {
     "id": "prod-1794903018635-w2r2",
     "name": "Daging kambing",
     "qty": 1,
