@@ -1,23 +1,5 @@
 export default [
   {
-    "id": "prod-1794917901472-4dj4",
-    "name": "Kuah Laksa",
-    "qty": 1,
-    "unit": "porsi",
-    "updatedBy": "Administrator",
-    "updatedAt": "17 Nov 19.18",
-    "lastCalc": "Stok awal: 1 porsi",
-    "lastType": "add",
-    "history": [
-      {
-        "calc": "Stok awal: 1 porsi",
-        "user": "Administrator",
-        "time": "17 Nov 19.18",
-        "type": "add"
-      }
-    ]
-  },
-  {
     "id": "prod-1794917889764-oet4",
     "name": "Kuah Gomeh",
     "qty": 1,
