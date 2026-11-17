@@ -182,13 +182,19 @@ export default [
   {
     "id": "prod-1794918441836-md27",
     "name": "Beras Merah",
-    "qty": 1,
-    "unit": "gram",
-    "updatedBy": "Administrator",
-    "updatedAt": "17 Nov 19.27",
-    "lastCalc": "Stok awal: 1 gram",
+    "qty": 0.001,
+    "unit": "kg",
+    "updatedBy": "Hadi Wijaya",
+    "updatedAt": "17 Nov 23.33",
+    "lastCalc": "Detail produk diubah: 0.001 kg",
     "lastType": "add",
     "history": [
+      {
+        "calc": "Detail produk diubah: 0.001 kg",
+        "user": "Hadi Wijaya",
+        "time": "17 Nov 23.33",
+        "type": "edit"
+      },
       {
         "calc": "Stok awal: 1 gram",
         "user": "Administrator",
