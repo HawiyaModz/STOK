@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794917561159-abaj",
+    "name": "Tempe Kuning",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.12",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 19.12",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794917549631-x5or",
     "name": "Tahu Kuning",
     "qty": 1,
