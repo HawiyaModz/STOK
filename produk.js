@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794903018635-w2r2",
+    "name": "Daging kambing",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.10",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.10",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794902887041-3p2a",
     "name": "Pete",
     "qty": 1,
