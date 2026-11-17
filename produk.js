@@ -2,13 +2,19 @@ export default [
   {
     "id": "prod-1794901258469-4dxt",
     "name": "Ayam Presto",
-    "qty": 1,
+    "qty": 0,
     "unit": "pcs",
     "updatedBy": "Administrator",
     "updatedAt": "17 Nov 14.41",
-    "lastCalc": "0 + 1 = 1 pcs",
-    "lastType": "add",
+    "lastCalc": "1 - 1 = 0 pcs",
+    "lastType": "sub",
     "history": [
+      {
+        "calc": "1 - 1 = 0 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 14.41",
+        "type": "sub"
+      },
       {
         "calc": "0 + 1 = 1 pcs",
         "user": "Administrator",
