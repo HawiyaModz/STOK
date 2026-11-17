@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794904863793-4fx9",
+    "name": "Bumbu Juhi",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.41",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.41",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794904734455-8eww",
     "name": "Bumbu Kerupuk Mie",
     "qty": 1,
