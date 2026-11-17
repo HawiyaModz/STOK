@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918058564-w13c",
+    "name": "Tempe Orek",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.20",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.20",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918034016-7xva",
     "name": "Tahu Goreng Isi",
     "qty": 1,
