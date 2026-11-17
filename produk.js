@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794917218583-r1nu",
+    "name": "Rawon",
+    "qty": 1,
+    "unit": "porsi",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.06",
+    "lastCalc": "Stok awal: 1 porsi",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 porsi",
+        "user": "Administrator",
+        "time": "17 Nov 19.06",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794916586411-9n0g",
     "name": "Garang Asam",
     "qty": 1,
