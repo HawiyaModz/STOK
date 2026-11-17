@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794902594589-w6u8",
+    "name": "Rangi",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.03",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.03",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794902580636-lc4w",
     "name": "Sate Ayam",
     "qty": 1,
