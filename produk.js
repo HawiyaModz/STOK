@@ -212,13 +212,19 @@ export default [
   {
     "id": "prod-1794918376970-gv0j",
     "name": "Beras Putih",
-    "qty": 1.001,
+    "qty": 0.001,
     "unit": "kg",
     "updatedBy": "Hadi Wijaya",
-    "updatedAt": "17 Nov 23.33",
-    "lastCalc": "1 + 1000 = 1.001 kg",
-    "lastType": "add",
+    "updatedAt": "17 Nov 23.34",
+    "lastCalc": "1.001 - 1 = 0.001 kg",
+    "lastType": "sub",
     "history": [
+      {
+        "calc": "1.001 - 1 = 0.001 kg",
+        "user": "Hadi Wijaya",
+        "time": "17 Nov 23.34",
+        "type": "sub"
+      },
       {
         "calc": "1 + 1000 = 1.001 kg",
         "user": "Hadi Wijaya",
