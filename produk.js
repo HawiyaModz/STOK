@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794902525984-na91",
+    "name": "Empal Biasa",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.02",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.02",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794902437171-v3n8",
     "name": "Kentang Balado",
     "qty": 1,
