@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794905069218-oiom",
+    "name": "Tahu Gejrot",
+    "qty": 1,
+    "unit": "bks",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.44",
+    "lastCalc": "Stok awal: 1 bks",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 bks",
+        "user": "Administrator",
+        "time": "17 Nov 15.44",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794905052034-xt5p",
     "name": "Kuah Gejrot",
     "qty": 1,
