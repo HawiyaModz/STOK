@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918457894-xfb1",
+    "name": "Tahu Kukus",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.27",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 19.27",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918441836-md27",
     "name": "Beras Merah",
     "qty": 1,
