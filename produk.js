@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794919888758-bzoa",
+    "name": "tess",
+    "qty": 1,
+    "unit": "kg",
+    "updatedBy": "Hadi Wijaya",
+    "updatedAt": "17 Nov 19.51",
+    "lastCalc": "Stok awal: 1 kg",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 kg",
+        "user": "Hadi Wijaya",
+        "time": "17 Nov 19.51",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918725093-lt3r",
     "name": "Soto Betawi",
     "qty": 1,
