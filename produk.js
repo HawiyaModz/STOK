@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794905052034-xt5p",
+    "name": "Kuah Gejrot",
+    "qty": 1,
+    "unit": "pcs",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 15.44",
+    "lastCalc": "Stok awal: 1 pcs",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 pcs",
+        "user": "Administrator",
+        "time": "17 Nov 15.44",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794904986900-9b5y",
     "name": "Kuah Tek Tek",
     "qty": 1,
