@@ -182,13 +182,19 @@ export default [
   {
     "id": "prod-1794918441836-md27",
     "name": "Beras Merah",
-    "qty": 0.001,
-    "unit": "kg",
+    "qty": 1,
+    "unit": "gram",
     "updatedBy": "Hadi Wijaya",
     "updatedAt": "17 Nov 23.33",
-    "lastCalc": "Detail produk diubah: 0.001 kg",
+    "lastCalc": "Detail produk diubah: 1 gram",
     "lastType": "add",
     "history": [
+      {
+        "calc": "Detail produk diubah: 1 gram",
+        "user": "Hadi Wijaya",
+        "time": "17 Nov 23.33",
+        "type": "edit"
+      },
       {
         "calc": "Detail produk diubah: 0.001 kg",
         "user": "Hadi Wijaya",
