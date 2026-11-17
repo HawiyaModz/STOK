@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918187557-a8vb",
+    "name": "Kol Potong",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.23",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.23",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918165515-409w",
     "name": "Wortel Potong",
     "qty": 1,
