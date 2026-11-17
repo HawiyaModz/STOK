@@ -1,5 +1,23 @@
 export default [
   {
+    "id": "prod-1794918571556-4np2",
+    "name": "Cabe Merah Besar",
+    "qty": 1,
+    "unit": "gram",
+    "updatedBy": "Administrator",
+    "updatedAt": "17 Nov 19.29",
+    "lastCalc": "Stok awal: 1 gram",
+    "lastType": "add",
+    "history": [
+      {
+        "calc": "Stok awal: 1 gram",
+        "user": "Administrator",
+        "time": "17 Nov 19.29",
+        "type": "add"
+      }
+    ]
+  },
+  {
     "id": "prod-1794918540000-tvbe",
     "name": "Sawi Asin",
     "qty": 1,
